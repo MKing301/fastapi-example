@@ -1,5 +1,6 @@
 # Project specific stuff
 guestbook.db
+settings.json
 
 # Environments
 .env
