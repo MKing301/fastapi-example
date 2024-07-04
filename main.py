@@ -1,7 +1,7 @@
 import models
 
 from datetime import date
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
@@ -35,6 +35,22 @@ async def create_item(person: Person, db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "Person added."}
+
+
+# Get a single person
+@app.get("/person/{person_id}")
+async def get_person(person_id: int, db: Session = Depends(get_db)):
+
+    person_model = db.query(models.Person).filter(
+            models.Person.id == person_id).first()
+
+    if person_model is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"ID {person_id}: Does not exist"
+        )
+
+    return person_model
 
 
 # Get all people
