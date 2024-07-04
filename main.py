@@ -37,3 +37,7 @@ async def create_item(person: Person, db: Session = Depends(get_db)):
     return {"message": "Person added."}
 
 
+# Get all people
+@app.get("/people")
+async def get_people(db: Session = Depends(get_db)):
+    return db.query(models.Person).all()
