@@ -27,7 +27,7 @@ class Person(BaseModel):
 
 # Create a person
 @app.post("/person")
-async def create_item(person: Person, db: Session = Depends(get_db)):
+async def create_person(person: Person, db: Session = Depends(get_db)):
     person_obj = models.Person()
     person_obj.first_name = person.first_name
     person_obj.last_name = person.last_name
