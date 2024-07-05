@@ -5,6 +5,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
+from typing import List
 
 
 app = FastAPI()
@@ -23,6 +24,13 @@ def get_db():
 class Person(BaseModel):
     first_name: str
     last_name: str
+
+
+class VisitBase(BaseModel):
+    arrival_date: date
+    departure_date: date
+    duration: int
+    comment: str
 
 
 # Create a person
@@ -57,3 +65,17 @@ async def get_person(person_id: int, db: Session = Depends(get_db)):
 @app.get("/people")
 async def get_people(db: Session = Depends(get_db)):
     return db.query(models.Person).all()
+
+
+# Create a visit
+@app.post("/visit/{person_id}")
+async def create_visit(person_id: int, visit: VisitBase, db: Session = Depends(get_db)):
+    visit_obj = models.Visit(person_id=person_id)
+    visit_obj.arrival_date = visit.arrival_date
+    visit_obj.departure_date = visit.departure_date
+    visit_obj.duration = (visit.departure_date - visit.arrival_date).days
+    visit_obj.comment = visit.comment
+    db.add(visit_obj)
+    db.commit()
+
+    return {"message": "Visit added."}
