@@ -21,7 +21,7 @@ def get_db():
         db.close()
 
 
-class Person(BaseModel):
+class PersonBase(BaseModel):
     first_name: str
     last_name: str
 
@@ -35,7 +35,7 @@ class VisitBase(BaseModel):
 
 # Create a person
 @app.post("/person")
-async def create_person(person: Person, db: Session = Depends(get_db)):
+async def create_person(person: PersonBase, db: Session = Depends(get_db)):
     person_obj = models.Person()
     person_obj.first_name = person.first_name
     person_obj.last_name = person.last_name
