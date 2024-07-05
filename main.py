@@ -79,3 +79,9 @@ async def create_visit(person_id: int, visit: VisitBase, db: Session = Depends(g
     db.commit()
 
     return {"message": "Visit added."}
+
+
+# Get all visits
+@app.get("/visit")
+async def get_visits(db: Session = Depends(get_db)):
+    return db.query(models.Visit).all()
