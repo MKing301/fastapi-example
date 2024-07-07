@@ -33,6 +33,12 @@ class VisitBase(BaseModel):
     comment: str
 
 
+# Create root endpoint
+@app.get("/")
+async def root():
+    return {"message": "API running..."}
+
+
 # Create a person
 @app.post("/person")
 async def create_person(person: PersonBase, db: Session = Depends(get_db)):
