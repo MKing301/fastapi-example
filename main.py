@@ -81,6 +81,25 @@ async def get_person(person_id: int, db: Session = Depends(get_db)):
     return person_model
 
 
+# Edit a person
+@app.put("/person/{person_id}")
+async def update_person(person_id: int, person: PersonBase, db: Session = Depends(get_db)):
+
+    person_model = db.query(models.Person).filter_by(id=person_id)
+
+    if person_model is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"ID {person_id}: Does not exist"
+        )
+
+    person_model.update({'first_name': person.first_name, 'last_name': person.last_name})
+    db.commit()
+
+    return {"message": "Person updated!"}
+
+
+
 # Get all people
 @app.get("/people")
 async def get_people(db: Session = Depends(get_db)):
