@@ -51,6 +51,20 @@ async def create_person(person: PersonBase, db: Session = Depends(get_db)):
     return {"message": "Person added."}
 
 
+
+# Delete a single person
+@app.delete("/person/{person_id}")
+async def get_person(person_id: int, db: Session = Depends(get_db)):
+
+    db.query(models.Person).filter(
+            models.Person.id == person_id).delete()
+
+    db.commit()
+    db.close()
+
+    return {"message": "Person deleted!"}
+
+
 # Get a single person
 @app.get("/person/{person_id}")
 async def get_person(person_id: int, db: Session = Depends(get_db)):
