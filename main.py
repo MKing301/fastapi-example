@@ -1,11 +1,12 @@
 import models
 
 from datetime import date
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from pydantic import BaseModel
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
-
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 description = """
 GuestBook App API helps you keep track of people who visit your home.
@@ -39,7 +40,7 @@ app = FastAPI(
 )
 
 models.Base.metadata.create_all(bind=engine)
-
+templates = Jinja2Templates(directory='guestbook/templates')
 
 def get_db():
     try:
@@ -62,9 +63,10 @@ class VisitBase(BaseModel):
 
 
 # Create root endpoint
-@app.get("/")
-async def root():
-    return {"message": "API running..."}
+@app.get('/', response_class=HTMLResponse)
+async def home(request: Request):
+    context = {'request': request}
+    return templates.TemplateResponse('index.html', context)
 
 
 # Create a person
