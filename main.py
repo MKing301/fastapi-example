@@ -53,7 +53,7 @@ async def create_person(person: PersonBase, db: Session = Depends(get_db)):
 
 # Delete a single person
 @app.delete("/person/{person_id}")
-async def get_person(person_id: int, db: Session = Depends(get_db)):
+async def delete_person(person_id: int, db: Session = Depends(get_db)):
 
     db.query(models.Person).filter(
             models.Person.id == person_id).delete()
