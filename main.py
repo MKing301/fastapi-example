@@ -7,7 +7,36 @@ from database import engine, SessionLocal
 from sqlalchemy.orm import Session
 
 
-app = FastAPI()
+description = """
+GuestBook App API helps you keep track of people who visit your home.
+
+## Person
+
+You will be able to:
+
+* **Create a person**
+* **Edit a person**
+* **Delete a person**
+* **Get list of all people**
+* **Get a single person**
+
+## Visit
+
+You will be able to:
+
+* **Create a visit**
+* **Edit a visit** (_not implemented_).
+* **Delete a visit**
+* **Get list of all people**
+* **Get a single person**  (_not implemented_).
+"""
+
+app = FastAPI(
+    title="GuestBook App",
+    description=description,
+    summary="Guestbook app.",
+    version="0.0.1",
+)
 
 models.Base.metadata.create_all(bind=engine)
 
