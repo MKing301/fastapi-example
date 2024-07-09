@@ -119,6 +119,19 @@ async def create_visit(person_id: int, visit: VisitBase, db: Session = Depends(g
     return {"message": "Visit added."}
 
 
+# Delete a single visit
+@app.delete("/visit/{id}")
+async def delete_visit(id: int, db: Session = Depends(get_db)):
+
+    db.query(models.Visit).filter(
+            models.Visit.id == id).delete()
+
+    db.commit()
+    db.close()
+
+    return {"message": "Visit deleted!"}
+
+
 # Get all visits
 @app.get("/visit")
 async def get_visits(db: Session = Depends(get_db)):
