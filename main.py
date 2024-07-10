@@ -131,9 +131,11 @@ async def update_person(person_id: int, person: PersonBase, db: Session = Depend
 
 
 # Get all people
-@app.get("/people")
-async def get_people(db: Session = Depends(get_db)):
-    return db.query(models.Person).all()
+@app.get("/people", response_class=HTMLResponse)
+async def get_people(request: Request, db: Session = Depends(get_db)):
+    people = db.query(models.Person).all()
+    context = {'request': request, 'people': people}
+    return templates.TemplateResponse('people.html', context)
 
 
 # Create a visit
