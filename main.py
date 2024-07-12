@@ -166,6 +166,10 @@ async def delete_visit(id: int, db: Session = Depends(get_db)):
 
 
 # Get all visits
-@app.get("/visit")
-async def get_visits(db: Session = Depends(get_db)):
-    return db.query(models.Visit).all()
+@app.get("/visit", response_class=HTMLResponse)
+async def get_visits(request: Request, db: Session = Depends(get_db)):
+    visits = []
+    for v, p in db.query(models.Visit, models.Person).filter(models.Visit.person_id==models.Person.id).all():
+        visits.append({"id": v.id, "first_name": p.first_name, "last_name": p.last_name, "arrival_date": v.arrival_date, "departure_date": v.departure_date, "duration": v.duration, "comment": v.comment})
+    context = {'request': request, 'visits': visits}
+    return templates.TemplateResponse('visits.html', context)
