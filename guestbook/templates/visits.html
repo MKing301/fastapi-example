@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block page_content %}
+<div class="container-fluid">
+    <div class="mx-4">
+        <p class="text-blue-600 text-2xl font-bold mb-4">Visits</p>
+    </div>
+    <table id="visits" class="table table-sm table-hover table-responsive-sm table-bordered" style="width:100%">
+        <thead class="table-primary">
+            <tr>
+            <th class="fit">ID</th>
+            <th class="fit">Person ID</th>
+            <th class="fit">Arrival Date</th>
+            <th class="fit">Departure Date</th>
+            <th class="fit">Duration</th>
+            <th class="fit">Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for visit in visits%}
+            <tr>
+                <td>{{visit.id}}</td>
+                <td>{{visit.first_name}} {{visit.last_name}}</td>
+                <td>{{visit.arrival_date}}</td>
+                <td>{{visit.departure_date}}</td>
+                <td>{{visit.duration}}</td>
+                <td>{{visit.comment}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
