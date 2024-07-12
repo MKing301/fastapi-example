@@ -1,20 +1,26 @@
 {% extends 'base.html' %}
 {% block page_content %}
-<div class="mx-4">
-    <p class="text-blue-600 text-2xl font-bold mb-4">Guest List</p>
+<div class="container-fluid">
+    <div class="mx-4">
+        <p class="text-blue-600 text-2xl font-bold mb-4">Guest List</p>
+    </div>
+    <table id="people" class="table table-sm table-hover table-responsive-sm table-bordered" style="width:100%">
+        <thead class="table-primary">
+            <tr>
+            <th class="fit">ID</th>
+            <th class="fit">First Name</th>
+            <th class="fit">Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for person in people %}
+            <tr>
+                <td>{{person.id}}</td>
+                <td>{{person.first_name}}</td>
+                <td>{{person.last_name}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-    </tr>
-    {% for person in people %}
-    <tr>
-        <td>{{person.id}}</td>
-        <td>{{person.first_name}}</td>
-        <td>{{person.last_name}}</td>
-    </tr>
-    {% endfor %}
-</table>
 {% endblock %}
