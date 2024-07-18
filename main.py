@@ -27,8 +27,8 @@ You will be able to:
 * **Create a visit**
 * **Edit a visit** (_not implemented_).
 * **Delete a visit**
-* **Get list of all people**
-* **Get a single person**  (_not implemented_).
+* **Get list of all visits**
+* **Get a list of all visits by a single person**  (_not implemented_).
 """
 
 app = FastAPI(
