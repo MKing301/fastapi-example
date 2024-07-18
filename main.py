@@ -25,7 +25,7 @@ You will be able to:
 You will be able to:
 
 * **Create a visit**
-* **Edit a visit** (_not implemented_).
+* **Edit a visit**
 * **Delete a visit**
 * **Get list of all visits**
 * **Get a list of all visits by a single person**
@@ -181,3 +181,28 @@ async def get_person_visits(person_id: int, db: Session = Depends(get_db)):
         )
 
     return person__visits_model
+
+
+# Edit a visit
+@app.put("/visit/{id}")
+async def update_visit(id: int, visit: VisitBase, db: Session = Depends(get_db)):
+
+    visit_model = db.query(models.Visit).filter_by(id=id)
+
+    if visit_model is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"ID {id}: Does not exist"
+        )
+
+    visit_model.update(
+        {
+            'arrival_date': visit.arrival_date,
+            'departure_date': visit.departure_date,
+            'duration': (visit.departure_date - visit.arrival_date).days,
+            'comment': visit.comment,
+        }
+        )
+    db.commit()
+
+    return {"message": "Visit updated!"}
