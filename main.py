@@ -28,7 +28,7 @@ You will be able to:
 * **Edit a visit** (_not implemented_).
 * **Delete a visit**
 * **Get list of all visits**
-* **Get a list of all visits by a single person**  (_not implemented_).
+* **Get a list of all visits by a single person**
 """
 
 app = FastAPI(
@@ -165,3 +165,19 @@ async def delete_visit(id: int, db: Session = Depends(get_db)):
 @app.get("/visit")
 async def get_visits(db: Session = Depends(get_db)):
     return db.query(models.Visit).all()
+
+
+# Get all visits by single person
+@app.get("/visit/{person_id}")
+async def get_person_visits(person_id: int, db: Session = Depends(get_db)):
+
+    person__visits_model = db.query(models.Visit).filter(
+            models.Visit.person_id == person_id).all()
+
+    if person__visits_model is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"ID {person_id}: Does not exist"
+        )
+
+    return person__visits_model
