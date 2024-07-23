@@ -1,3 +1,4 @@
+from fastapi.responses import FileResponse
 import models
 
 from datetime import date
@@ -5,6 +6,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
+from config import settings
 
 
 description = """
@@ -40,6 +42,10 @@ app = FastAPI(
 
 models.Base.metadata.create_all(bind=engine)
 
+
+@app.get('favicon.ico', include_in_schema=False)
+async def favicon():
+    return FileResponse(settings.favicon)
 
 def get_db():
     try:
