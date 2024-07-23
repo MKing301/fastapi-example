@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     pg_host: str
     pg_port: str
     pg_dbname: str
+    favicon: str
 
     class Config:
         env_file = ".env"
